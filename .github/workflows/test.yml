@@ -51,7 +51,7 @@ jobs:
           sudo tar zxpf luarocks-3.3.0.tar.gz
           cd luarocks-3.3.0
           ./configure --prefix=/usr/local/luarocks && make && sudo make install
-          sudo /usr/local/luarocks install luasec
+          sudo /usr/local/luarocks/bin/luarocks install luasec
 
       - name: Install Casbin, dependencies and setup environment
         env:
