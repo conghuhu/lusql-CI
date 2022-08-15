@@ -27,7 +27,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        lua-version: ["5.3", "5.4"]
+        lua-version: ["5.1", "5.2", "5.3", "5.4"]
 
     name: Lua ${{ matrix.lua-version }}
 
@@ -70,13 +70,13 @@ jobs:
           git clone https://github.com/casbin/lua-casbin.git
           cd lua-casbin
           luarocks make *.rockspec
-          sleep 1
-          luarocks make *.rockspec
           cd ..
           sudo apt install sqlite3 libsqlite3-dev lua-sql-mysql libpq-dev
           # install luasql driver
           git clone https://github.com/lunarmodules/luasql.git
-          cd luasql/rockspec
+          cd luasql
+          git checkout 2.6.0
+          cd rockspec
           cp ./luasql-mysql-2.6.0-1.rockspec ../luasql-mysql-2.6.0-1.rockspec
           cp ./luasql-postgres-2.6.0-1.rockspec ../luasql-postgres-2.6.0-1.rockspec
           cp ./luasql-sqlite3-2.6.0-1.rockspec ../luasql-sqlite3-2.6.0-1.rockspec
@@ -86,6 +86,9 @@ jobs:
           luarocks make luasql-sqlite3-2.6.0-1.rockspec
           cd ..
           sleep 2
+          cd lua-casbin
+          luarocks make *.rockspec
+          cd ..
 
       - name: Run tests
         run: |
