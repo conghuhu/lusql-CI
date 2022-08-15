@@ -41,17 +41,12 @@ jobs:
           sudo apt install gcc libpcre3 libpcre3-dev
 
       - name: Set up Lua ${{ matrix.lua-version }}
-        uses: leafo/gh-actions-lua@v8.0.0
+        uses: leafo/gh-actions-lua@v9
         with:
           luaVersion: ${{ matrix.lua-version }}
 
       - name: Set up luarocks
-        run: |
-          wget https://luarocks.org/releases/luarocks-3.3.0.tar.gz
-          sudo tar zxpf luarocks-3.3.0.tar.gz
-          cd luarocks-3.3.0
-          ./configure --prefix=/usr/local/luarocks && make && sudo make install
-          sudo /usr/local/luarocks/bin/luarocks install luasec
+        uses: leafo/gh-actions-luarocks@v4.0.0
 
       - name: Install Casbin, dependencies and setup environment
         env:
@@ -61,7 +56,7 @@ jobs:
         run: |
           sudo /etc/init.d/mysql start
           mysql -e 'CREATE DATABASE ${{ env.MYSQL_DB }};' -u${{ env.MYSQL_USER }} -p${{ env.MYSQL_PASSWORD }}
-          sudo luarocks install https://raw.githubusercontent.com/casbin/lua-casbin/master/casbin-1.41.1-1.rockspec
+          luarocks install https://raw.githubusercontent.com/casbin/lua-casbin/master/casbin-1.41.1-1.rockspec
           sudo apt install sqlite3 libsqlite3-dev lua-sql-mysql libpq-dev
           # install luasql driver
           sudo git clone https://github.com/lunarmodules/luasql.git
@@ -70,13 +65,17 @@ jobs:
           sudo cp ./luasql-postgres-2.6.0-1.rockspec ../luasql-postgres-2.6.0-1.rockspec
           sudo cp ./luasql-sqlite3-2.6.0-1.rockspec ../luasql-sqlite3-2.6.0-1.rockspec
           cd ..
-          sudo luarocks make luasql-mysql-2.6.0-1.rockspec MYSQL_INCDIR=/usr/include/mysql/
-          sudo luarocks make luasql-postgres-2.6.0-1.rockspec PGSQL_INCDIR=/usr/include/postgresql/
-          sudo luarocks make luasql-sqlite3-2.6.0-1.rockspec
+          luarocks make luasql-mysql-2.6.0-1.rockspec MYSQL_INCDIR=/usr/include/mysql/
+          luarocks make luasql-postgres-2.6.0-1.rockspec PGSQL_INCDIR=/usr/include/postgresql/
+          luarocks make luasql-sqlite3-2.6.0-1.rockspec
           cd ..
+
+      - name: Set up testing env
+        run: |
           luarocks install busted
           luarocks install busted-htest
           luarocks install luacov-coveralls
+          luarocks install luasec
 
       - name: Run tests
         run: |
