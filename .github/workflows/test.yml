@@ -55,6 +55,7 @@ jobs:
           MYSQL_USER: root
           MYSQL_PASSWORD: root
       run: |
+        sudo -s
         sudo /etc/init.d/mysql start
         mysql -e 'CREATE DATABASE ${{ env.MYSQL_DB }};' -u${{ env.MYSQL_USER }} -p${{ env.MYSQL_PASSWORD }}
         sudo luarocks install https://raw.githubusercontent.com/casbin/lua-casbin/master/casbin-1.41.1-1.rockspec
