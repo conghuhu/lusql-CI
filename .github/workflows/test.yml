@@ -69,9 +69,6 @@ jobs:
           luarocks make luasql-postgres-2.6.0-1.rockspec PGSQL_INCDIR=/usr/include/postgresql/
           luarocks make luasql-sqlite3-2.6.0-1.rockspec
           cd ..
-
-      - name: Set up testing env
-        run: |
           luarocks install busted
           luarocks install busted-htest
           luarocks install luacov-coveralls
