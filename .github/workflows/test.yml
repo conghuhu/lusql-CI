@@ -48,6 +48,17 @@ jobs:
       - name: Set up luarocks
         uses: leafo/gh-actions-luarocks@v4.0.0
 
+      - name: Install dependencies
+        run: |
+          luarocks install lualogging
+          luarocks install lrexlib-pcre
+          luarocks install luaposix
+          luarocks install luasocket
+          luarocks install busted
+          luarocks install busted-htest
+          luarocks install luacov-coveralls
+          luarocks install luasec
+
       - name: Install Casbin, dependencies and setup environment
         env:
           MYSQL_DB: casbin
@@ -56,7 +67,10 @@ jobs:
         run: |
           sudo /etc/init.d/mysql start
           mysql -e 'CREATE DATABASE ${{ env.MYSQL_DB }};' -u${{ env.MYSQL_USER }} -p${{ env.MYSQL_PASSWORD }}
-          luarocks install https://raw.githubusercontent.com/casbin/lua-casbin/master/casbin-1.41.1-1.rockspec
+          git clone https://github.com/casbin/lua-casbin.git
+          cd lua-casbin
+          luarocks make *.rockspec
+          cd ..
           sudo apt install sqlite3 libsqlite3-dev lua-sql-mysql libpq-dev
           # install luasql driver
           git clone https://github.com/lunarmodules/luasql.git
@@ -69,10 +83,6 @@ jobs:
           luarocks make luasql-postgres-2.6.0-1.rockspec PGSQL_INCDIR=/usr/include/postgresql/
           luarocks make luasql-sqlite3-2.6.0-1.rockspec
           cd ..
-          luarocks install busted
-          luarocks install busted-htest
-          luarocks install luacov-coveralls
-          luarocks install luasec
 
       - name: Run tests
         run: |
