@@ -27,7 +27,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        lua-version: ["5.1", "5.2", "5.3", "5.4", "luajit-openresty"]
+        lua-version: ["5.3", "5.4", "luajit-2.1.0-beta3"]
 
     name: Lua ${{ matrix.lua-version }}
 
@@ -83,6 +83,7 @@ jobs:
           luarocks make luasql-postgres-2.6.0-1.rockspec PGSQL_INCDIR=/usr/include/postgresql/
           luarocks make luasql-sqlite3-2.6.0-1.rockspec
           cd ..
+          sleep 2
 
       - name: Run tests
         run: |
