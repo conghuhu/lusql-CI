@@ -70,6 +70,7 @@ jobs:
           pwd
           git clone https://github.com/casbin/lua-casbin.git
           cd lua-casbin
+          git checkout v1.16.0
           luarocks make *.rockspec
           cd ..
           sudo apt install sqlite3 libsqlite3-dev lua-sql-mysql libpq-dev
@@ -85,9 +86,6 @@ jobs:
           luarocks make luasql-mysql-2.6.0-1.rockspec MYSQL_INCDIR=/usr/include/mysql/
           luarocks make luasql-postgres-2.6.0-1.rockspec PGSQL_INCDIR=/usr/include/postgresql/
           luarocks make luasql-sqlite3-2.6.0-1.rockspec
-          cd ..
-          cd lua-casbin
-          luarocks make *.rockspec
           cd ..
           sleep 2
 
