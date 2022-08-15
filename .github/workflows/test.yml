@@ -38,8 +38,8 @@ jobs:
 
     - name: Install PCRE
       run: |
-        sudo apt-get update
-        sudo apt-get install gcc libpcre3 libpcre3-dev
+        sudo apt update
+        sudo apt install gcc libpcre3 libpcre3-dev
 
     - name: Set up Lua ${{ matrix.lua-version }}
       uses: leafo/gh-actions-lua@v8.0.0
