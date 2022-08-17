@@ -67,12 +67,8 @@ jobs:
         run: |
           sudo /etc/init.d/mysql start
           mysql -e 'CREATE DATABASE ${{ env.MYSQL_DB }};' -u${{ env.MYSQL_USER }} -p${{ env.MYSQL_PASSWORD }}
-          pwd
           git clone https://github.com/casbin/lua-casbin.git
-          cd lua-casbin
-          git checkout v1.41.1
-          luarocks make *.rockspec
-          cd ..
+          luarocks install https://raw.githubusercontent.com/casbin/lua-casbin/master/casbin-1.41.1-1.rockspec
           sudo apt install sqlite3 libsqlite3-dev lua-sql-mysql libpq-dev
           # install luasql driver
           git clone https://github.com/lunarmodules/luasql.git
