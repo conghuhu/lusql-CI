@@ -92,7 +92,6 @@ jobs:
         run: |
           luarocks show casbin
           sudo env "LUA_PATH=$LUA_PATH" "PATH=$PATH" "LUA_CPATH=$LUA_CPATH" busted tests -o htest
-
       - name: Reporting test coverage
         run: |
           sudo env "LUA_PATH=$LUA_PATH" "PATH=$PATH" "LUA_CPATH=$LUA_CPATH" busted tests -c -v
